@@ -28,10 +28,10 @@ public:
 class SP_Node {
 public:
     Vertex* v_end;
-    int path_length;
+    int dist;
     std::vector<Vertex*> path;
 
-    SP_Node(Vertex* v_end, int path_length, std::vector<Vertex*> path) : v_end(v_end), path_length(path_length), path(path) {}
+    SP_Node(Vertex* v_end, int distance, std::vector<Vertex*> path) : v_end(v_end), dist(distance), path(path) {}
 };
 
 

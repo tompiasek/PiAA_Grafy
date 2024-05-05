@@ -1,5 +1,7 @@
 #include "graphs/adjacency_matrix_graph.hpp"
 
+#include <queue>
+
 
 AdjacencyMatrixGraph::AdjacencyMatrixGraph(int no_vertices, int no_edges) : Graph(no_vertices, no_edges) {}
 
@@ -272,4 +274,55 @@ void AdjacencyMatrixGraph::printMatrix() {
 		}
 		std::cout << "\n";
 	}
+}
+
+std::vector<SP_Node*> AdjacencyMatrixGraph::spDijkstra(int idStart) {
+	std::vector<std::vector<Vertex*>> paths(no_vertices);
+
+	// Convert given vertex ID to its position in the vertices list
+	idStart = findVertexPos(idStart);
+	
+	// Check if starting vertex exists
+	if (idStart == -1) {
+		std::cerr << "Vertex with ID " << idStart << " does not exist [spDijkstra].\n";
+		return std::vector<SP_Node*>();
+	}
+
+	// Initialize paths with starting vertex
+	paths[idStart].push_back(vertices[idStart]);
+
+    std::vector<int> dist(vertices.size(), DEFAULT_WEIGHT);
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
+
+	// Initialize starting vertex and priority queue
+    dist[idStart] = 0;
+    pq.push({0, idStart});
+
+	// Dijkstra's algorithm itself
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        for (int v = 0; v < vertices.size(); ++v) {
+            if (adjacencyMatrix[u][v] != DEFAULT_WEIGHT) {
+                int weight = adjacencyMatrix[u][v];
+                if (dist[v] > dist[u] + weight) {
+                    dist[v] = dist[u] + weight;
+                    pq.push({dist[v], v});
+
+					paths[v] = paths[u];
+					paths[v].push_back(vertices[v]);
+                }
+            }
+        }
+    }
+
+	// Convert results to SP_Node objects
+    std::vector<SP_Node*> result;
+    for (int i = 0; i < vertices.size(); ++i) {
+        SP_Node* node = new SP_Node(vertices[i], dist[i], paths[i]);
+        result.push_back(node);
+    }
+
+    return result;
 }

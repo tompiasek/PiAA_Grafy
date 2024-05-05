@@ -5,7 +5,7 @@
 
 #include "graphs/graph.hpp"
 
-constexpr int DEFAULT_WEIGHT = NULL;
+constexpr int DEFAULT_WEIGHT = INT_MAX;
 
 class AdjacencyMatrixGraph : public Graph
 {
@@ -38,6 +38,10 @@ class AdjacencyMatrixGraph : public Graph
     void printMatrix(); // Done
     
     std::vector<SP_Node*> spDijkstra(int idStart) override; // TO-DO
+
+public:
+    std::vector<Vertex*>* getVertices() { return &vertices; }
+    std::vector<std::vector<int>>* getAdjacencyMatrix() { return &adjacencyMatrix; }
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

@@ -174,7 +174,7 @@ void AdjacencyListGraph::removeEdge(int idStart, int idEnd) {
 
 std::vector<Vertex*> AdjacencyListGraph::getNeighbours(int id) {
     int v_pos = findVertexPos(id);
-    Vertex* v_found;
+
     std::vector<Vertex*> neighbours;
     if (v_pos != -1) {
         for (Edge* e : adjacencyList[v_pos]) {

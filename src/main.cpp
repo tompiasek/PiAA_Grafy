@@ -2,17 +2,19 @@
 #include <conio.h>
 #include <fstream>
 #include <sstream>
+#include "utilities.hpp"
 
 #include "graphs/adjacency_list_graph.hpp"
 #include "graphs/adjacency_matrix_graph.hpp"
 
 using namespace std;
 
+
 int main(int argc, char* argv[])
 {
     // std::cout<< "Tu wykonujemy testy efektywności algorytmów"<<std::endl;
 
-    ifstream file("C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\graph\\graphV10D0.5.txt");
+    ifstream file("C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\graph\\graphV100D0.5.txt");
 
     if (!file.is_open()) {
 		std::cerr << "Error: file not opened" << std::endl;
@@ -20,46 +22,22 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+    string path = "C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\sp_result\\";
+    string file_name = "spV100D0.5.txt";
+    vector<SP_Node*> results = readSPResults(path + file_name);
+
+
     std::unique_ptr<Graph> graph = AdjacencyListGraph::createGraph(file);
     file.clear();
     file.seekg(0, ios::beg);
     std::unique_ptr<Graph> graphM = AdjacencyMatrixGraph::createGraph(file);
 
-    graphM->print();
 
-    if (auto graphM_child = dynamic_cast<AdjacencyMatrixGraph*>(graphM.get())) {
-        graphM_child->printMatrix();
-        graphM_child->addVertex(100);
-        graphM_child->removeVertex(1);
-        graphM_child->updateVertex(5, 2);
-        graphM_child->addEdge(2, 6, 32);
-        graphM_child->addEdge(100, 3, 1);
-        cout << endl << "Added vertex 100, removed vertex 1, updated vertex 5 to 2, added edge 2-7 with weight 32, added edge 100-3 with weight 1" << endl;
-        graphM_child->printMatrix();
-    }
-    else cout << "Error: dynamic cast failed" << endl;
+    std::vector<SP_Node*> paths = graphM->spDijkstra(graphM->getSPVertexId());
 
-    cout << "\n\n\n";
 
-    graph->print();
-
-    cout << "SP_Vertex ID: " << graph->getSPVertexId() << endl;
-
-    vector<Vertex*> neighbours = graph->getNeighbours(1);
-
-    cout << "Neighbours of vertex 1: ";
-    for (Vertex* v : neighbours) {
-		cout << v->id << " ";
-	}
-    cout << endl;
-
-    graph->updateVertex(1, 100);
-
-    graph->removeVertex(100);
-
-    graph->addEdge(2, 4, 10);
-
-    graph->print();
+    if (checkDijkstra(paths, results)) cout << "Dijkstra results are the same!" << endl;
+    else cout << "Dijkstra results are different!" << endl;
 
 
     return 0;
