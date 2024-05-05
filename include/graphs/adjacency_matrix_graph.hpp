@@ -5,28 +5,39 @@
 
 #include "graphs/graph.hpp"
 
+constexpr int DEFAULT_WEIGHT = NULL;
+
 class AdjacencyMatrixGraph : public Graph
 {
+    std::vector<Vertex*> vertices;
+    std::vector<std::vector<int>> adjacencyMatrix;
 
   public:
     // TODO: implement
+    AdjacencyMatrixGraph() = default;
+    AdjacencyMatrixGraph(int no_vertices, int no_edges);
+    AdjacencyMatrixGraph(int no_vertices, int no_edges, std::vector<Vertex*> vertices, std::vector<std::vector<int>> adjacencyMatrix);
+    AdjacencyMatrixGraph(int no_vertices, int no_edges, std::vector<Vertex*> vertices, std::vector<std::vector<int>> adjacencyMatrix, Vertex* v_sp);
 
-    static std::unique_ptr<Graph> createGraph(std::istream& is); // TO-DO
+    static std::unique_ptr<Graph> createGraph(std::istream& is); // Done
 
-    int addVertex(int id) override { return 0; }; // TO_DO
-    void updateVertex(int id, int v) {}; // TO_DO
-    void removeVertex(int id) override {}; // TO_DO
+    int addVertex(int id) override; // Done (check)
+    void updateVertex(int id, int v) override; // Done (check)
+    void removeVertex(int id) override; // Done (check)
 
-    void addEdge(int idStart, int idEnd, int w) override {}; // TO_DO
-    void updateEdge(int idStart, int idEnd, int w) {}; // TO_DO
-    void removeEdge(int idStart, int idEnd) override {}; // TO_DO
+    void addEdge(int idStart, int idEnd, int w) override; // Done
+    void updateEdge(int idStart, int idEnd, int w) override; // Done
+    void removeEdge(int idStart, int idEnd) override; // Done
 
-    std::vector<Vertex*> getNeighbours(int id) override { return std::vector<Vertex*>(); }; // TO_DO
-    void checkNeighbour(int id, int n) {}; // TO_DO
+    std::vector<Vertex*> getNeighbours(int id) override; // Done
+    bool checkNeighbour(int id, int n); // Done
 
-    int findVertexPos(int v_id) { return 0; }; // TO_DO
-    Edge* findEdge(int idStart, int idEnd) { return nullptr; }; // TO_DO
-    void print() {}; // TO_DO
+    int findVertexPos(int v_id) override; // Done (check)
+    Edge* findEdge(int idStart, int idEnd) override; // Done (consider returned type)
+    void print() override; // Done
+    void printMatrix(); // Done
+    
+    std::vector<SP_Node*> spDijkstra(int idStart) override; // TO-DO
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

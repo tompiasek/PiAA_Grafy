@@ -1,7 +1,6 @@
 #ifndef ADJACENCY_LIST_GRAPH_HPP_
 #define ADJACENCY_LIST_GRAPH_HPP_
 
-#include <iostream>
 #include <memory>
 #include <list>
 
@@ -38,7 +37,9 @@ public:
     int findVertexPos(int v_id) override; // Done
     Edge* findEdge(int idStart, int idEnd) override; // Done
     int findEdgePos(int idStart, int idEnd); // Done
-    void print() override;
+    void print() override; //Done
+
+    std::vector<SP_Node*> spDijkstra(int idStart) { return std::vector<SP_Node*>(); }; // TO-DO
 };
 
 #endif /* ADJACENCY_LIST_GRAPH_HPP_ */

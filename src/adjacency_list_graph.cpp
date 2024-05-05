@@ -1,7 +1,5 @@
 #include "graphs/adjacency_list_graph.hpp"
 
-#include <sstream>
-
 //AdjacencyListGraph::AdjacencyListGraph() : Graph() {};
 
 AdjacencyListGraph::AdjacencyListGraph(int no_vertices, int no_edges) : Graph(no_vertices, no_edges) {};
@@ -16,7 +14,6 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     int no_vertices = 0, no_edges = 0;
     is >> no_vertices >> no_edges;
 
-    std::string line;
     int v1_val = 0, v2_val = 0, w = 0, v_id = 0, v_sp_val = NULL;
     std::vector<Vertex*> vertices;
     std::vector<std::list<Edge*>> adjacencyList(no_vertices);

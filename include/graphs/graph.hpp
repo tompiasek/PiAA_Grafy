@@ -1,7 +1,9 @@
 #ifndef GRAPH_HPP_
 #define GRAPH_HPP_
 
+#include <iostream>
 #include <vector>
+#include <sstream>
 
 
 class Vertex
@@ -21,6 +23,15 @@ public:
     int weight;
 
     Edge(Vertex* start, Vertex* end, int weight) : start(start), end(end), weight(weight) {}
+};
+
+class SP_Node {
+public:
+    Vertex* v_end;
+    int path_length;
+    std::vector<Vertex*> path;
+
+    SP_Node(Vertex* v_end, int path_length, std::vector<Vertex*> path) : v_end(v_end), path_length(path_length), path(path) {}
 };
 
 
@@ -51,6 +62,8 @@ public:
     virtual int findVertexPos(int v_id) = 0;
     virtual Edge* findEdge(int idStart, int idEnd) = 0;
     virtual void print() = 0;
+
+    virtual std::vector<SP_Node*> spDijkstra(int idStart) = 0;
 
     int getNoVertices() const {
 		return no_vertices;
