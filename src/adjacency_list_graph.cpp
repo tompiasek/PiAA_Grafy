@@ -258,3 +258,59 @@ void AdjacencyListGraph::print() {
     if (sp_vertex != nullptr) 
         std::cout << getSPVertexId() << std::endl;
 }
+
+std::vector<SP_Node*> AdjacencyListGraph::spDijkstra(int idStart) {
+    // Initialize distances and paths
+    std::vector<int> dist(vertices.size(), INT_MAX);
+    std::vector<std::vector<Vertex*>> paths(vertices.size());
+
+    // Convert the given vertex ID to its position in the vertices vector
+    idStart = findVertexPos(idStart);
+    
+	if (idStart == -1) {
+		std::cerr << "Vertex with ID " << idStart << " does not exist [spDijkstra].\n";
+		return std::vector<SP_Node*>();
+	}
+
+	// Initialize paths with starting vertex
+	paths[idStart].push_back(vertices[idStart]);
+
+    // Min heap to store vertices (distance, vertex)
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
+
+    dist[idStart] = 0;
+    pq.push({0, idStart});
+
+    while (!pq.empty())
+    {
+        int u = pq.top().second;
+        pq.pop();
+
+        for (Edge* edge : adjacencyList[u])
+        {
+            int v = findVertexPos(edge->end->id);
+            int weight = edge->weight;
+
+            if (dist[v] > dist[u] + weight)
+            {
+                dist[v] = dist[u] + weight;
+                paths[v] = paths[u]; // Copy the path from u to v
+                paths[v].push_back(vertices[v]); // Append v to the path
+                pq.push({dist[v], v});
+            }
+        }
+    }
+
+    // 'dist' contains the shortest distances from 'idStart' to all other vertices,
+    // 'paths' contains the actual paths.
+
+    // Example: Creating SP_Node objects (you'll need to adapt this to your specific class)
+    std::vector<SP_Node*> result;
+    for (int i = 0; i < vertices.size(); ++i)
+    {
+        SP_Node* node = new SP_Node(vertices[i], dist[i], paths[i]);
+        result.push_back(node);
+    }
+
+    return result;
+}

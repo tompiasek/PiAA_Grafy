@@ -39,7 +39,7 @@ public:
     int findEdgePos(int idStart, int idEnd); // Done
     void print() override; //Done
 
-    std::vector<SP_Node*> spDijkstra(int idStart) { return std::vector<SP_Node*>(); }; // TO-DO
+    std::vector<SP_Node*> spDijkstra(int idStart); // TO-DO
 };
 
 #endif /* ADJACENCY_LIST_GRAPH_HPP_ */

@@ -13,7 +13,6 @@ class AdjacencyMatrixGraph : public Graph
     std::vector<std::vector<int>> adjacencyMatrix;
 
   public:
-    // TODO: implement
     AdjacencyMatrixGraph() = default;
     AdjacencyMatrixGraph(int no_vertices, int no_edges);
     AdjacencyMatrixGraph(int no_vertices, int no_edges, std::vector<Vertex*> vertices, std::vector<std::vector<int>> adjacencyMatrix);
@@ -37,7 +36,7 @@ class AdjacencyMatrixGraph : public Graph
     void print() override; // Done
     void printMatrix(); // Done
     
-    std::vector<SP_Node*> spDijkstra(int idStart) override; // TO-DO
+    std::vector<SP_Node*> spDijkstra(int idStart) override; // Done
 
 public:
     std::vector<Vertex*>* getVertices() { return &vertices; }

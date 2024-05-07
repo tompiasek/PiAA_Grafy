@@ -1,7 +1,5 @@
 #include "graphs/adjacency_matrix_graph.hpp"
 
-#include <queue>
-
 
 AdjacencyMatrixGraph::AdjacencyMatrixGraph(int no_vertices, int no_edges) : Graph(no_vertices, no_edges) {}
 
