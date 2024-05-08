@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
     // std::cout<< "Tu wykonujemy testy efektywności algorytmów"<<std::endl;
 
-    ifstream file("C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\graph\\graphV200D1.txt");
+    ifstream file("C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\graph\\graphV100D0.75Negative.txt");
 
     if (!file.is_open()) {
 		std::cerr << "Error: file not opened" << std::endl;
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	}
 
     string path = "C:\\Users\\tompi\\source\\repos\\PiAAGrafy\\sp_data\\sp_result\\";
-    string file_name = "spV200D1.txt";
+    string file_name = "spV100D0.75Negative.txt";
     vector<SP_Node*> results = readSPResults(path + file_name);
 
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     std::chrono::steady_clock::time_point start, end;
     start = std::chrono::high_resolution_clock::now();
-    std::vector<SP_Node*> paths = graph->spDijkstra(graph->getSPVertexId());
+    std::vector<SP_Node*> paths = graph->spBellmanFord(graph->getSPVertexId());
     end = std::chrono::high_resolution_clock::now();
     auto time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 

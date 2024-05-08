@@ -324,3 +324,7 @@ std::vector<SP_Node*> AdjacencyMatrixGraph::spDijkstra(int idStart) {
 
     return result;
 }
+
+std::vector<SP_Node*> AdjacencyMatrixGraph::spBellmanFord(int idStart) {
+	return std::vector<SP_Node*>();
+}

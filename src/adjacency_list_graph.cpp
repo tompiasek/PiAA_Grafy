@@ -261,7 +261,7 @@ void AdjacencyListGraph::print() {
 
 std::vector<SP_Node*> AdjacencyListGraph::spDijkstra(int idStart) {
     // Initialize distances and paths
-    std::vector<int> dist(vertices.size(), INT_MAX);
+    std::vector<int> dist(vertices.size(), DEFAULT_WEIGHT);
     std::vector<std::vector<Vertex*>> paths(vertices.size());
 
     // Convert the given vertex ID to its position in the vertices vector
@@ -309,6 +309,68 @@ std::vector<SP_Node*> AdjacencyListGraph::spDijkstra(int idStart) {
     for (int i = 0; i < vertices.size(); ++i)
     {
         SP_Node* node = new SP_Node(vertices[i], dist[i], paths[i]);
+        result.push_back(node);
+    }
+
+    return result;
+}
+
+std::vector<SP_Node*> AdjacencyListGraph::spBellmanFord(int idStart) {
+	// Initialize distances and paths
+	std::vector<int> dist(vertices.size(), DEFAULT_WEIGHT);
+	std::vector<std::vector<Vertex*>> paths(vertices.size());
+
+	// Convert the given vertex ID to its position in the vertices vector
+	idStart = findVertexPos(idStart);
+	
+    if (idStart == -1) {
+		std::cerr << "Vertex with ID " << idStart << " does not exist [spBellmanFord].\n";
+		return std::vector<SP_Node*>();
+	}
+
+	// Initialize paths with starting vertex
+	paths[idStart].push_back(vertices[idStart]);
+	dist[idStart] = 0;
+
+	// Relax all edges V-1 times
+    for (int n = 0; n < vertices.size() - 1; n++) {
+        for (int i = 0; i < vertices.size(); i++) {
+			for (Edge* edge : adjacencyList[i]) { 
+                Vertex* u = edge->start;
+                int u_pos = findVertexPos(u->id);
+                Vertex* v = edge->end;
+                int v_pos = findVertexPos(v->id);
+                if (dist[v_pos] > dist[u_pos] + edge->weight && dist[u_pos] != DEFAULT_WEIGHT)
+                {
+				    dist[v_pos] = dist[u_pos] + edge->weight;
+				    paths[v_pos] = paths[u_pos]; // Copy the path from u to v
+				    paths[v_pos].push_back(v); // Append v to the path
+			    }
+            }
+        }
+	}
+
+	// Check for negative cycles
+    for (int u = 0; u < vertices.size(); u++) {
+        for (Edge* edge : adjacencyList[u]) {
+			int v = findVertexPos(edge->end->id);
+			int weight = edge->weight;
+
+            if (dist[v] > dist[findVertexPos(edge->start->id)] + weight) {
+				std::cerr << "Graph contains negative cycle!\n";
+				return std::vector<SP_Node*>();
+			}
+		}
+	}
+
+	// 'dist' contains the shortest distances from 'idStart' to all other vertices,
+	// 'paths' contains the actual paths.
+
+    // Creating SP_Node objects
+	std::vector<SP_Node*> result;
+    for (int i = 0; i < vertices.size(); ++i)
+    {
+		SP_Node* node = new SP_Node(vertices[i], dist[i], paths[i]);
         result.push_back(node);
     }
 

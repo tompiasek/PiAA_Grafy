@@ -7,6 +7,9 @@
 #include <queue>
 
 
+constexpr int DEFAULT_WEIGHT = INT_MAX;
+
+
 class Vertex
 {
 public:
@@ -65,6 +68,7 @@ public:
     virtual void print() = 0;
 
     virtual std::vector<SP_Node*> spDijkstra(int idStart) = 0;
+    virtual std::vector<SP_Node*> spBellmanFord(int idStart) = 0;
 
     int getNoVertices() const {
 		return no_vertices;
