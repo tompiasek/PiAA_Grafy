@@ -304,7 +304,7 @@ std::vector<SP_Node*> AdjacencyListGraph::spDijkstra(int idStart) {
     // 'dist' contains the shortest distances from 'idStart' to all other vertices,
     // 'paths' contains the actual paths.
 
-    // Example: Creating SP_Node objects (you'll need to adapt this to your specific class)
+    // Creating SP_Node objects
     std::vector<SP_Node*> result;
     for (int i = 0; i < vertices.size(); ++i)
     {

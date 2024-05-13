@@ -326,5 +326,59 @@ std::vector<SP_Node*> AdjacencyMatrixGraph::spDijkstra(int idStart) {
 }
 
 std::vector<SP_Node*> AdjacencyMatrixGraph::spBellmanFord(int idStart) {
-	return std::vector<SP_Node*>();
+	std::vector<std::vector<Vertex*>> paths(no_vertices);
+
+	// Convert given vertex ID to its position in the vertices list
+	idStart = findVertexPos(idStart);
+	
+	// Check if starting vertex exists
+	if (idStart == -1) {
+		std::cerr << "Vertex with ID " << idStart << " does not exist [spBellmanFord].\n";
+		return std::vector<SP_Node*>();
+	}
+
+	// Initialize paths with starting vertex
+	paths[idStart].push_back(vertices[idStart]);
+
+	std::vector<int> dist(vertices.size(), DEFAULT_WEIGHT);
+	dist[idStart] = 0;
+
+	// Bellman-Ford algorithm itself
+	for (int i = 0; i < vertices.size() - 1; i++) {
+		for (int u = 0; u < vertices.size(); u++) {
+			for (int v = 0; v < vertices.size(); v++) {
+				if (adjacencyMatrix[u][v] != DEFAULT_WEIGHT) {
+					int weight = adjacencyMatrix[u][v];
+					if (dist[v] > dist[u] + weight && dist[u] != DEFAULT_WEIGHT) {
+						dist[v] = dist[u] + weight;
+
+						paths[v] = paths[u];
+						paths[v].push_back(vertices[v]);
+					}
+				}
+			}
+		}
+	}
+
+	// Check for negative cycles
+	for (int u = 0; u < vertices.size(); u++) {
+		for (int v = 0; v < vertices.size(); v++) {
+			if (adjacencyMatrix[u][v] != DEFAULT_WEIGHT) {
+				int weight = adjacencyMatrix[u][v];
+				if (dist[v] > dist[u] + weight) {
+					std::cerr << "Graph contains negative cycle [spBellmanFord].\n";
+					return std::vector<SP_Node*>();
+				}
+			}
+		}
+	}
+
+	// Convert results to SP_Node objects
+	std::vector<SP_Node*> result;
+	for (int i = 0; i < vertices.size(); ++i) {
+		SP_Node* node = new SP_Node(vertices[i], dist[i], paths[i]);
+		result.push_back(node);
+	}
+
+	return result;
 }

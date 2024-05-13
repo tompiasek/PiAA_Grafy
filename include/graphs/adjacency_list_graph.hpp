@@ -40,7 +40,7 @@ public:
     void print() override; //Done
 
     std::vector<SP_Node*> spDijkstra(int idStart); // Done
-    std::vector<SP_Node*> spBellmanFord(int idStart); // TO-DO
+    std::vector<SP_Node*> spBellmanFord(int idStart); // Done
 };
 
 #endif /* ADJACENCY_LIST_GRAPH_HPP_ */
